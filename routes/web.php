@@ -13,6 +13,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/amo/auth/{slug}', 'Amo\OAuthController@setToken')->name('amo.auth');
+Route::get('/amo/token/{slug}', 'Amo\OAuthController@getToken')->name('amo.redirect');
