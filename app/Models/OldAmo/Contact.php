@@ -26,7 +26,7 @@ class Contact extends Model
         $remoteRaw = static::getRemoteList();
 
         //Удаляем контакты которых уже нет в амо
-        static::whereNotIn('id', $remoteRaw->pluck('id')->toArray())->delete();
+        static::query()->delete();
 
         //Создаем или обновляем локальный контакт
         return static::manyUpdateOrCreateFromRaw($remoteRaw);
