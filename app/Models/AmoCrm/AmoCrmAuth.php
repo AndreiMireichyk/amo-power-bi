@@ -1,36 +1,32 @@
 <?php
 
-namespace App\Models\Amo;
+
+namespace App\Models\AmoCrm;
 
 
 use AmoCRM\Client\AmoCRMApiClient;
-use AmoCRM\OAuth2\Client\Provider\AmoCRMException;
-use Illuminate\Database\Eloquent\Model;
 use League\OAuth2\Client\Token\AccessToken;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
-class AmoClient extends Model
+trait AmoCrmAuth
 {
-    public function getClient()
+    private function setClient()
     {
-        $client = new AmoCRMApiClient(
+        $client =  new AmoCRMApiClient(
             $this->getAttribute('client_id'),
             $this->getAttribute('secret'),
             route('amo.redirect', $this->getAttribute('slug'))
         );
 
-        $this->setAttribute('client', $client);
-
-        return $client;
-
+        return $this->client = $client;
     }
-
 
     /**
      * @return AccessToken
      * @throws \Exception
      */
-    public function getToken()
+
+    private function prepareToken()
     {
         if (!$this->getAttribute('access_token')) {
             throw new \Exception('Invalid access token');
@@ -40,7 +36,7 @@ class AmoClient extends Model
             'access_token' => $this->getAttribute('access_token'),
             'refresh_token' => $this->getAttribute('refresh_token'),
             'expires' => $this->getAttribute('expires'),
-            'baseDomain' => $this->getAttribute('baseDomain'),
+            'baseDomain' => $this->getAttribute('base_domain'),
         ]);
     }
 
@@ -48,9 +44,9 @@ class AmoClient extends Model
     /**
      * @throws \Exception
      */
-    public function checkToken()
+    private function checkToken()
     {
-        $accessToken = $this->getToken();
+        $accessToken = $this->prepareToken();
 
         $this->client->setAccessToken($accessToken)
             ->setAccountBaseDomain($accessToken->getValues()['baseDomain'])

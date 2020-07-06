@@ -3,17 +3,27 @@
 namespace App\Http\Controllers\Amo;
 
 use App\Http\Controllers\Controller;
-use App\Models\Amo\AmoClient;
+use App\Models\AmoCrm\AmoCrm;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 
 class OAuthController extends Controller
 {
-    public function setToken(Request $request, $slug){
+    /**
+     * Запрос токена
+     *
+     * @param Request $request
+     * @param $slug
+     * @return RedirectResponse|Redirector
+     * @throws \Exception
+     */
+    public function requestToken(Request $request, $slug){
         $state = bin2hex(random_bytes(16));
 
-        $client = AmoClient::where('slug', $slug)->firstOrFail()->getClient();
+        $amo = AmoCrm::where('slug', $slug)->firstOrFail();
 
-        $url = $client->getOAuthClient()->getAuthorizeUrl([
+        $url = $amo->client->getOAuthClient()->getAuthorizeUrl([
             'state' => $state,
             'mode' => 'post_message',
         ]);
@@ -21,18 +31,36 @@ class OAuthController extends Controller
         return redirect($url);
     }
 
-    public function getToken(Request $request, $slug){
-        $client = AmoClient::where('slug', $slug)->firstOrFail();
+    /**
+     * WebHook получение запрошенного токена
+     *
+     * @param Request $request
+     * @param $slug
+     */
+    public function setToken(Request $request, $slug){
+        $amo = AmoCrm::where('slug', $slug)->firstOrFail();
 
-        $accessToken = $client->getClient()
+        $accessToken = $amo->client
+            ->setAccountBaseDomain($amo->getAttribute('base_domain'))
             ->getOAuthClient()
             ->getAccessTokenByCode($request->get('code'));
 
-        $client->fill([
+
+        $amo->fill([
             'access_token' => $accessToken->getToken(),
             'refresh_token' => $accessToken->getRefreshToken(),
             'expires' => $accessToken->getExpires(),
             'baseDomain' => $request->get('referer'),
         ])->save();
+
+        echo "Авторизация пройдена успешно";
+    }
+
+    public function test()
+    {
+        $amo = AmoCrm::whereSlug('old_sanatoriums')->firstOrFail();
+        dd( $contact = $amo->client->contacts()->get());
+        dd($amo->client);
+
     }
 }

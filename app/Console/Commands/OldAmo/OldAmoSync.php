@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\OldAmo;
 
+use App\Models\OldAmo\Contact;
 use Illuminate\Console\Command;
 
 class OldAmoSync extends Command
@@ -11,7 +12,7 @@ class OldAmoSync extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'old_amo:sync';
 
     /**
      * The console command description.
@@ -37,6 +38,6 @@ class OldAmoSync extends Command
      */
     public function handle()
     {
-        //
+        Contact::sync();
     }
 }
