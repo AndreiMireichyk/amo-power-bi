@@ -52,7 +52,7 @@ class Contact extends Model
 
             $phone = collect($phones)->first()['value'];
 
-            $prepared_phone = str_replace(['+', '(', ')', '-', ' '], '', $phone);
+            $prepared_phone = str_replace(['+', '(', ')', '-', ' ', 'undefined'], '', $phone);
 
             $email = $fields->where('field_code', 'EMAIL')->first()['values'][0]['value'] ?? '';
 
@@ -62,6 +62,7 @@ class Contact extends Model
             $__contact = static::updateOrCreate(
                 ['id' => $contact['id']],
                 [
+                    'name' => $contact['name'],
                     'phone' => $prepared_phone,
                     'email' => $prepared_email,
                     'raw' => $contact,

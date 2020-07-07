@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/', 'Amo\OAuthController@index')->name('home');
 Route::get('/amo/auth/{slug}', 'Amo\OAuthController@requestToken')->name('amo.auth');
 Route::get('/amo/token/{slug}', 'Amo\OAuthController@setToken')->name('amo.redirect');
 Route::get('/test', 'Amo\OAuthController@test');

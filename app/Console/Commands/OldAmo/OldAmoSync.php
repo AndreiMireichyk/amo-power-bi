@@ -38,6 +38,11 @@ class OldAmoSync extends Command
      */
     public function handle()
     {
+
+        $start = time();
         Contact::sync();
+
+       echo "Затрачено времени ".date('H:i:s', time()-$start);
+
     }
 }

@@ -10,6 +10,12 @@ use Illuminate\Routing\Redirector;
 
 class OAuthController extends Controller
 {
+
+    public function index(){
+        return view('welcome', [
+            'accounts'=>AmoCrm::all()
+        ]);
+    }
     /**
      * Запрос токена
      *
@@ -36,6 +42,7 @@ class OAuthController extends Controller
      *
      * @param Request $request
      * @param $slug
+     * @return RedirectResponse
      */
     public function setToken(Request $request, $slug){
         $amo = AmoCrm::where('slug', $slug)->firstOrFail();
@@ -53,7 +60,7 @@ class OAuthController extends Controller
             'baseDomain' => $request->get('referer'),
         ])->save();
 
-        echo "Авторизация пройдена успешно";
+        return redirect()->route('home');
     }
 
     public function test()
