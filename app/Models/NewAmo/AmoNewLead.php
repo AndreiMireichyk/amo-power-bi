@@ -34,7 +34,7 @@ class AmoNewLead extends Model
 
        //Создаем лиды
        foreach ($preparedRaw as $raw){
-           static::create($raw);
+           static::updateOrCreate(['id', $raw['id']] , $raw);
        }
     }
 
