@@ -34,7 +34,8 @@ class AmoNewLead extends Model
 
        //Создаем лиды
        foreach ($preparedRaw as $raw){
-           static::updateOrCreate(['id', $raw['id']] , $raw);
+
+           static::updateOrCreate(['id'=> $raw['id']] , $raw);
        }
     }
 
@@ -46,7 +47,7 @@ class AmoNewLead extends Model
     public static function getRemoteList()
     {
         $fullList = collect();
-        $page = 1;
+        $page = 29;
         $limit = 250;
 
         $client = AmoCrm::whereSlug('new_sanatoriums')->first()->client;
