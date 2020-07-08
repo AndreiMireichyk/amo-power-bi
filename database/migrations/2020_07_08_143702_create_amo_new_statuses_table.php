@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAmoNewPiplinesTable extends Migration
+class CreateAmoNewStatusesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class CreateAmoNewPiplinesTable extends Migration
      */
     public function up()
     {
-        Schema::create('amo_new_piplines', function (Blueprint $table) {
-            $table->id();
+        Schema::create('amo_new_statuses', function (Blueprint $table) {
+            $table->integer('id');
+            $table->string('name');
+            $table->integer('amo_new_pipeline_id');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ class CreateAmoNewPiplinesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('amo_new_piplines');
+        Schema::dropIfExists('amo_new_statuses');
     }
 }

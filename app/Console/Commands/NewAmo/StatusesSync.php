@@ -2,24 +2,24 @@
 
 namespace App\Console\Commands\NewAmo;
 
+use App\Models\NewAmo\AmoNewStatuses;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
 
-class Sync extends Command
+class StatusesSync extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'amocrm:new-sync';
+    protected $signature = 'amocrm:new-statuses-sync';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Полная синхронизация';
+    protected $description = 'Command description';
 
     /**
      * Create a new command instance.
@@ -38,11 +38,6 @@ class Sync extends Command
      */
     public function handle()
     {
-        //Последовательность не менять
-        Artisan::call('amocrm:new-users-sync');
-        Artisan::call('amocrm:new-pipelines-sync');
-        Artisan::call('amocrm:new-statuses-sync');
-        Artisan::call('amocrm:new-contacts-sync');
-        Artisan::call('amocrm:new-leads-sync');
+        AmoNewStatuses::sync();
     }
 }

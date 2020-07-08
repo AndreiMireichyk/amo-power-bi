@@ -6,33 +6,35 @@ use App\Models\AmoCrm\AmoCrm;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
-class AmoNewUser extends Model
+class AmoNewPipeline extends Model
 {
     protected $guarded = [];
 
+    protected $casts = ['raw' => 'array'];
+
     /**
-     * Синхронизация пользователей
+     * Обновление всех воронок из AmoCrm
+     *
+     * @return void
      */
     public static function sync()
     {
-        //Очищаем таблицы
         static::query()->delete();
 
-        //Получаем список пользователей
         $remoteRaw = static::getRemoteList();
 
-        //Создаем
-        foreach ($remoteRaw as $raw) {
+        foreach ($remoteRaw as $raw){
             static::create([
-                'id' => $raw['id'],
-                'name' => $raw['name'],
-                'email' => $raw['email'],
+                'id'=>$raw['id'],
+                'name'=>$raw['name']
             ]);
         }
     }
 
+
     /**
-     * Получаем полный список пользователей
+     * Получаем полный список воронок из AmoCrm
+     *
      *
      * @return Collection
      */
@@ -40,8 +42,8 @@ class AmoNewUser extends Model
     {
         $client = AmoCrm::whereSlug('new_sanatoriums')->firstOrFail()->client;
 
-        $users = $client->users();
+        $pipelines = $client->pipelines();
 
-        return collect($users->get(null, ['group'])->toArray());
+        return  collect($pipelines->get()->toArray());
     }
 }

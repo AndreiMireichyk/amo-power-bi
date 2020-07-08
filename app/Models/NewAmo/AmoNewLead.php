@@ -2,8 +2,6 @@
 
 namespace App\Models\NewAmo;
 
-use AmoCRM\Client;
-use AmoCRM\Filters\ContactsFilter;
 use AmoCRM\Filters\CustomersFilter;
 use AmoCRM\Filters\LeadsFilter;
 use AmoCRM\Helpers\EntityTypesInterface;
@@ -20,9 +18,9 @@ class AmoNewLead extends Model
     protected $casts = ['raw' => 'array'];
 
     /**
-     * Обновление всех контактов из AmoCrm
+     * Обновление всех лидов из AmoCrm
      *
-     * @return Collection
+     * @return void
      */
     public static function sync()
     {
@@ -34,7 +32,6 @@ class AmoNewLead extends Model
 
        //Создаем лиды
        foreach ($preparedRaw as $raw){
-
            static::updateOrCreate(['id'=> $raw['id']] , $raw);
        }
     }
