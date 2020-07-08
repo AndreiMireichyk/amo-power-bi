@@ -47,7 +47,7 @@ class AmoNewLead extends Model
     public static function getRemoteList()
     {
         $fullList = collect();
-        $page = 29;
+        $page = 1;
         $limit = 250;
 
         $client = AmoCrm::whereSlug('new_sanatoriums')->first()->client;
