@@ -8,7 +8,7 @@ use App\Models\AmoCrm\AmoCrm;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
-class Contact extends Model
+class AmoOldContact extends Model
 {
     protected $guarded = [];
 

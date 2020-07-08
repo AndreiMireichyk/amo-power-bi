@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Console\Commands\OldAmo;
+namespace App\Console\Commands\NewAmo;
 
-use App\Models\OldAmo\AmoOldContact;
+use App\Models\NewAmo\AmoNewLead;
 use Illuminate\Console\Command;
 
-class OldAmoSync extends Command
+class LeadSync extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'old_amo:sync';
+    protected $signature = 'amocrm:new-leads-sync';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Sync сделок из новой црм';
 
     /**
      * Create a new command instance.
@@ -34,16 +34,11 @@ class OldAmoSync extends Command
     /**
      * Execute the console command.
      *
-     * @return void
+     * @return int
      */
     public function handle()
     {
-
-        $start = time();
-
-        AmoOldContact::sync();
-
-       echo "Затрачено времени ".date('H:i:s', time()-$start);
-
+        AmoNewLead::tableColumnMapping();
+        AmoNewLead::sync();
     }
 }

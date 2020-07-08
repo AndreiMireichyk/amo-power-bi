@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Console\Commands\OldAmo;
+namespace App\Console\Commands\NewAmo;
 
-use App\Models\OldAmo\AmoOldContact;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 
-class OldAmoSync extends Command
+class Sync extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'old_amo:sync';
+    protected $signature = 'amocrm:new-sync';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Полная синхронизация';
 
     /**
      * Create a new command instance.
@@ -34,16 +34,11 @@ class OldAmoSync extends Command
     /**
      * Execute the console command.
      *
-     * @return void
+     * @return int
      */
     public function handle()
     {
-
-        $start = time();
-
-        AmoOldContact::sync();
-
-       echo "Затрачено времени ".date('H:i:s', time()-$start);
-
+        Artisan::call('amocrm:new-contacts-sync');
+        Artisan::call('amocrm:new-leads-sync');
     }
 }

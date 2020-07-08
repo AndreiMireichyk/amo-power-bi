@@ -125,6 +125,7 @@ class Lead extends Model
             $table->engine = 'MyISAM';
 
             $table->bigIncrements('id');
+            $table->integer('amo_new_contact_id');
             $table->text('name')->nullable();
             $table->string('date_create')->nullable();
             $table->string('created_user_id')->nullable();
