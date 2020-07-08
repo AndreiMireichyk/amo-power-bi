@@ -135,7 +135,7 @@ class AmoNewLead extends Model
 
             $lead = [
                 'id'=>$item['id'],
-                'amo_new_contact_id'=>$item['contacts'][0]['id'],
+                'amo_new_contact_id'=>$item['contacts'][0]['id'] ?? 0,
                 'name'=>$item['name'],
                 'price'=>$item['price'],
                 'responsible_user_id'=>$item['responsible_user_id'],
