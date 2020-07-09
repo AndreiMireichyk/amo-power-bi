@@ -38,7 +38,6 @@ class LeadSync extends Command
      */
     public function handle()
     {
-        AmoNewLead::tableColumnMapping();
         AmoNewLead::sync();
     }
 }

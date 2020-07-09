@@ -30,6 +30,9 @@ class AmoNewLead extends Model
         //Приводим к нужному формату
         $preparedRaw = static::prepareRaw($remoteRaw);
 
+        //Пересоздаем таблицу, актуализируем поля
+        static::tableColumnMapping();
+
        //Создаем лиды
        foreach ($preparedRaw as $raw){
            static::updateOrCreate(['id'=> $raw['id']] , $raw);
