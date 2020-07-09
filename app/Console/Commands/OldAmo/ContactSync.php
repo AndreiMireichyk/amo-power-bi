@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\OldAmo;
 
-use App\Models\Lead;
+use App\Models\OldAmo\AmoOldContact;
 use Illuminate\Console\Command;
 
-class LeadsSync extends Command
+class ContactSync extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'leads:sync';
+    protected $signature = 'amocrm:old-contacts-sync';
 
     /**
      * The console command description.
@@ -38,7 +38,6 @@ class LeadsSync extends Command
      */
     public function handle()
     {
-        Lead::tableColumnMapping();
-        Lead::sync();
+        AmoOldContact::sync();
     }
 }
