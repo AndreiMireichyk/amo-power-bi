@@ -52,7 +52,7 @@ trait AmoCrmAuth
             ->setAccountBaseDomain($accessToken->getValues()['baseDomain'])
             ->onAccessTokenRefresh(
                 function (AccessTokenInterface $accessToken, string $baseDomain) {
-                    dd($accessToken);
+
                     $this->fill([
                         'access_token' => $accessToken->getToken(),
                         'refresh_token' => $accessToken->getRefreshToken(),
