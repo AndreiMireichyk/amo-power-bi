@@ -46,9 +46,7 @@ class AmoNewUser extends Model
 
         $groups = $account->getUsersGroups();
 
-        $users = $client->users();
-
-        $users = $users->get(null, ['groups']);
+        $users = $client->users()->get(null, ['groups']);
 
         return collect($users->toArray())->map(function ($user) use ($groups) {
             $group_id = $user['rights']['group_id'] ?? 0;
