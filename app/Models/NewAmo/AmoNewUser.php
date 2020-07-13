@@ -2,6 +2,7 @@
 
 namespace App\Models\NewAmo;
 
+use AmoCRM\Models\AccountModel;
 use App\Models\AmoCrm\AmoCrm;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -27,6 +28,7 @@ class AmoNewUser extends Model
                 'id' => $raw['id'],
                 'name' => $raw['name'],
                 'email' => $raw['email'],
+                'group_name' => $raw['group_name'],
             ]);
         }
     }
@@ -40,8 +42,18 @@ class AmoNewUser extends Model
     {
         $client = AmoCrm::whereSlug('new_sanatoriums')->firstOrFail()->client;
 
+        $account = $client->account()->getCurrent(AccountModel::getAvailableWith());
+
+        $groups = $account->getUsersGroups();
+
         $users = $client->users();
 
-        return collect($users->get(null, ['group'])->toArray());
+        $users = $users->get(null, ['groups']);
+
+        return collect($users->toArray())->map(function ($user) use ($groups) {
+            $group_id = $user['rights']['group_id'] ?? 0;
+            $user['group_name'] = $groups->getBy('id', $group_id)->name;
+            return $user;
+        });
     }
 }
