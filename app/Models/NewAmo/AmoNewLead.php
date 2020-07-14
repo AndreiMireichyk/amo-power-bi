@@ -35,6 +35,7 @@ class AmoNewLead extends Model
 
         //Создаем лиды
         foreach ($preparedRaw as $raw) {
+            echo "Сдлека ".$raw['id'] . "\n";
             static::updateOrCreate(['id' => $raw['id']], $raw);
         }
     }
@@ -132,8 +133,7 @@ class AmoNewLead extends Model
     {
         $prepared = [];
 
-        foreach ($raw as $item) {
-
+        foreach ($raw as $key => $item) {
             $lead = [
                 'id' => $item['id'],
                 'amo_new_contact_id' => $item['contacts'][0]['id'] ?? 0,
@@ -156,7 +156,7 @@ class AmoNewLead extends Model
                 'account_id' => $item['account_id'],
             ];
 
-            if (isset($item['custom_fields_values'])) {
+            if (isset($item['custom_fields_values']) && !is_null($item['custom_fields_values'])) {
                 foreach ($item['custom_fields_values']->toArray() as $field) {
                     $lead[$field['field_id']] = implode(';', array_column($field['values'], 'value'));
                 }
