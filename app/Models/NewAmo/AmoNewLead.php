@@ -33,10 +33,10 @@ class AmoNewLead extends Model
         //Пересоздаем таблицу, актуализируем поля
         static::tableColumnMapping();
 
-       //Создаем лиды
-       foreach ($preparedRaw as $raw){
-           static::updateOrCreate(['id'=> $raw['id']] , $raw);
-       }
+        //Создаем лиды
+        foreach ($preparedRaw as $raw) {
+            static::updateOrCreate(['id' => $raw['id']], $raw);
+        }
     }
 
     /**
@@ -58,7 +58,7 @@ class AmoNewLead extends Model
 
         while ($page) {
 
-            echo "Страница $page. Лидов = " . count($fullList)*$limit . "\n";
+            echo "Страница $page. Лидов = " . count($fullList) * $limit . "\n";
 
             $filter->setPage($page);
 
@@ -68,7 +68,7 @@ class AmoNewLead extends Model
                 $page = $page + 1;
             } catch (\Exception $e) {
                 $page = false;
-                echo $e->getMessage()."\n";
+                echo $e->getMessage() . "\n";
             }
         }
 
@@ -132,32 +132,34 @@ class AmoNewLead extends Model
     {
         $prepared = [];
 
-        foreach ($raw as $item){
+        foreach ($raw as $item) {
 
             $lead = [
-                'id'=>$item['id'],
-                'amo_new_contact_id'=>$item['contacts'][0]['id'] ?? 0,
-                'name'=>$item['name'],
-                'price'=>$item['price'],
-                'responsible_user_id'=>$item['responsible_user_id'],
-                'group_id'=>$item['group_id'],
-                'status_id'=>$item['status_id'],
-                'pipeline_id'=>$item['pipeline_id'],
-                'loss_reason_id'=>$item['loss_reason_id'],
-                'source_id'=>$item['source_id'],
-                'created_by'=>$item['created_by'],
-                'updated_by'=>$item['updated_by'],
-                'created_at'=>$item['created_at'],
-                'updated_at'=>$item['updated_at'],
-                'closed_at'=>$item['closed_at'],
-                'closest_task_at'=>$item['closest_task_at'],
-                'is_deleted'=>$item['is_deleted'],
-                'score'=>$item['score'],
-                'account_id'=>$item['account_id'],
+                'id' => $item['id'],
+                'amo_new_contact_id' => $item['contacts'][0]['id'] ?? 0,
+                'name' => $item['name'],
+                'price' => $item['price'],
+                'responsible_user_id' => $item['responsible_user_id'],
+                'group_id' => $item['group_id'],
+                'status_id' => $item['status_id'],
+                'pipeline_id' => $item['pipeline_id'],
+                'loss_reason_id' => $item['loss_reason_id'],
+                'source_id' => $item['source_id'],
+                'created_by' => $item['created_by'],
+                'updated_by' => $item['updated_by'],
+                'created_at' => $item['created_at'],
+                'updated_at' => $item['updated_at'],
+                'closed_at' => $item['closed_at'],
+                'closest_task_at' => $item['closest_task_at'],
+                'is_deleted' => $item['is_deleted'],
+                'score' => $item['score'],
+                'account_id' => $item['account_id'],
             ];
 
-            foreach ($item['custom_fields_values']->toArray() as $field){
-                $lead[$field['field_id']] =  implode(';',array_column($field['values'], 'value'));
+            if (isset($item['custom_fields_values'])) {
+                foreach ($item['custom_fields_values']->toArray() as $field) {
+                    $lead[$field['field_id']] = implode(';', array_column($field['values'], 'value'));
+                }
             }
 
             array_push($prepared, $lead);

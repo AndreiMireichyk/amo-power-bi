@@ -5,6 +5,7 @@ namespace App\Models\AmoCrm;
 
 
 use AmoCRM\Client\AmoCRMApiClient;
+use Illuminate\Support\Facades\Storage;
 use League\OAuth2\Client\Token\AccessToken;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
@@ -12,7 +13,7 @@ trait AmoCrmAuth
 {
     private function setClient()
     {
-        $client =  new AmoCRMApiClient(
+        $client = new AmoCRMApiClient(
             $this->getAttribute('client_id'),
             $this->getAttribute('secret'),
             route('amo.redirect', $this->getAttribute('slug'))
