@@ -162,6 +162,8 @@ class AmoNewLead extends Model
                 }
             }
 
+            unset($lead[0]);
+
             array_push($prepared, $lead);
 
         }
