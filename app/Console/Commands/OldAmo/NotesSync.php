@@ -2,17 +2,17 @@
 
 namespace App\Console\Commands\OldAmo;
 
-use App\Models\OldAmo\AmoOldContact;
+use App\Models\OldAmo\AmoOldNote;
 use Illuminate\Console\Command;
 
-class ContactSync extends Command
+class NotesSync extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'amocrmold:contacts-sync';
+    protected $signature = 'amocrmold:notes-sync';
 
     /**
      * The console command description.
@@ -38,6 +38,6 @@ class ContactSync extends Command
      */
     public function handle()
     {
-        AmoOldContact::sync();
+        AmoOldNote::sync();
     }
 }

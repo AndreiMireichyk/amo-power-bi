@@ -86,7 +86,7 @@ class AmoOldContact extends Model
     {
         $fullList = collect();
         $page = 1;
-        $limit = 250;
+        $limit = 500;
 
         $client = AmoCrm::whereSlug('old_sanatoriums')->firstOrFail()->client;
 
