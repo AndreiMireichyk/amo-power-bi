@@ -180,11 +180,13 @@ class AmoNewLead extends Model
 
             if (isset($item['custom_fields_values']) && !is_null($item['custom_fields_values'])) {
                 foreach ($item['custom_fields_values']->toArray() as $field) {
+
+                    if ($field['field_id'] == 0) continue;
+
                     $lead[$field['field_id']] = implode(';', array_column($field['values'], 'value'));
                 }
             }
 
-            unset($lead[0]);
 
             array_push($prepared, $lead);
 
