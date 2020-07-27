@@ -189,7 +189,7 @@ class AmoNewLead extends Model
             }
 
             if ($item['id'] == 9758316){
-                dd($raw);
+                dd($item);
             }
 
             array_push($prepared, $lead);
