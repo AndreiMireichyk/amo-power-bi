@@ -35,8 +35,14 @@ class AmoNewLead extends Model
 
         //Создаем лиды
         foreach ($preparedRaw as $raw) {
-            echo "Сдлека " . $raw['id'] . "\n";
-            static::updateOrCreate(['id' => $raw['id']], $raw);
+            try {
+                echo "Сдлека " . $raw['id'] . "\n";
+                static::updateOrCreate(['id' => $raw['id']], $raw);
+            }catch (\Exception $e){
+                echo $e->getMessage()."\n";
+                var_dump($raw);
+            }
+
         }
     }
 
@@ -188,9 +194,6 @@ class AmoNewLead extends Model
                 }
             }
 
-            if ($item['id'] == 9758316){
-                dd($lead);
-            }
 
             array_push($prepared, $lead);
 
