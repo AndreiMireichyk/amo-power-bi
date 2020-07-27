@@ -35,7 +35,7 @@ class AmoNewLead extends Model
 
         //Создаем лиды
         foreach ($preparedRaw as $raw) {
-            echo "Сдлека ".$raw['id'] . "\n";
+            echo "Сдлека " . $raw['id'] . "\n";
             static::updateOrCreate(['id' => $raw['id']], $raw);
         }
     }
@@ -76,6 +76,32 @@ class AmoNewLead extends Model
         return $fullList->collapse();
     }
 
+    public static function getRemoteCustomFields()
+    {
+        $collection = collect();
+
+        $client = AmoCrm::whereSlug('new_sanatoriums')->first()->client;
+
+        $customFields = $client->customFields(EntityTypesInterface::LEADS);
+
+        $filter = (new CustomersFilter())->setLimit(250);
+
+        $page = 1;
+
+        while ($page) {
+            try {
+                $filter->setPage($page);
+                $collection->push($customFields->get($filter)->toArray());
+                $page++;
+            } catch (\Exception $e) {
+                echo $e->getMessage() . "\n";
+                $page = false;
+            }
+        }
+
+        return $collection->collapse();
+    }
+
     /**
      * Пересоздаем таблицу для актуализации полей
      *
@@ -83,13 +109,9 @@ class AmoNewLead extends Model
     public static function tableColumnMapping()
     {
 
-        $amo = AmoCrm::whereSlug('new_sanatoriums')->first();
+        $custom_fields = static::getRemoteCustomFields();
 
-        $filter = (new CustomersFilter())->setLimit(250);
-
-        $custom_fields = $amo->client->customFields(EntityTypesInterface::LEADS)->get($filter)->toArray();
-
-        $prepared_fields = collect($custom_fields)->pluck('name', 'id');
+        $prepared_fields = $custom_fields->pluck('name', 'id');
 
         Schema::dropIfExists('amo_new_leads');
 
