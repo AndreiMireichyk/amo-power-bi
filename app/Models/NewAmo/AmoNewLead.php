@@ -49,7 +49,7 @@ class AmoNewLead extends Model
     {
         $fullList = collect();
         $page = 1;
-        $limit = 50;
+        $limit = 150;
 
         $client = AmoCrm::whereSlug('new_sanatoriums')->first()->client;
 
@@ -156,6 +156,7 @@ class AmoNewLead extends Model
         $prepared = [];
 
         foreach ($raw as $key => $item) {
+
             $lead = [
                 'id' => $item['id'],
                 'amo_new_contact_id' => $item['contacts'][0]['id'] ?? 0,
@@ -187,6 +188,9 @@ class AmoNewLead extends Model
                 }
             }
 
+            if ($item['id'] == 9758316){
+                dd($raw);
+            }
 
             array_push($prepared, $lead);
 
