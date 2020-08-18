@@ -39,7 +39,7 @@ class Sync extends Command
     public function handle()
     {
         //Последовательность не менять
-        Artisan::call('amocrm:new-users-sync');
+        //Artisan::call('amocrm:new-users-sync');
         Artisan::call('amocrm:new-pipelines-sync');
         Artisan::call('amocrm:new-statuses-sync');
         Artisan::call('amocrm:new-contacts-sync');
