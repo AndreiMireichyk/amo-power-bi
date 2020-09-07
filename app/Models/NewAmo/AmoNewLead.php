@@ -38,21 +38,26 @@ class AmoNewLead extends Model
             try {
                 echo "Сдлека " . $raw['id'] . "\n";
                 static::updateOrCreate(['id' => $raw['id']], $raw);
-            }catch (\Exception $e){
-                echo $e->getMessage()."\n";
+            } catch (\Exception $e) {
+                echo $e->getMessage() . "\n";
             }
 
         }
     }
 
-    public static function syncById($id){
+    public static function syncById($id)
+    {
         $client = AmoCrm::whereSlug('new_sanatoriums')->first()->client;
 
-        $raw = collect()->push($client->leads()->getOne($id, ['contacts'])->toArray());
+        try {
+            $raw = collect()->push($client->leads()->getOne($id, ['contacts'])->toArray());
 
-        $prepared_raw = collect(static::prepareRaw($raw))->first();
+            $prepared_raw = collect(static::prepareRaw($raw))->first();
 
-        return static::updateOrCreate(['id' => $prepared_raw['id']], $prepared_raw);
+            return static::updateOrCreate(['id' => $prepared_raw['id']], $prepared_raw);
+        } catch (\Exception $e) {
+            echo $e->getMessage() . PHP_EOL;
+        }
     }
 
     /**

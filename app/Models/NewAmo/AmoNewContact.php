@@ -34,9 +34,14 @@ class AmoNewContact extends Model
     {
         $client = AmoCrm::whereSlug('new_sanatoriums')->firstOrFail()->client;
 
-        $raw = collect()->push($client->contacts()->getOne($id)->toArray());
+        try {
+            $raw = collect()->push($client->contacts()->getOne($id)->toArray());
 
-        return static::manyUpdateOrCreateFromRaw($raw);
+            return static::manyUpdateOrCreateFromRaw($raw);
+        } catch (\Exception $e) {
+            echo $e->getMessage() . PHP_EOL;
+        }
+
     }
 
     /**
@@ -102,7 +107,7 @@ class AmoNewContact extends Model
         $filter = (new ContactsFilter())->setLimit($limit);
 
         while ($page) {
-            echo "Страница $page. Контактов = " . count($fullList)*$limit . "\n";
+            echo "Страница $page. Контактов = " . count($fullList) * $limit . "\n";
 
             $filter->setPage($page);
 
@@ -112,7 +117,7 @@ class AmoNewContact extends Model
                 $page = $page + 1;
             } catch (\Exception $e) {
                 $page = false;
-                echo $e->getMessage()."\n";
+                echo $e->getMessage() . "\n";
             }
         }
 
