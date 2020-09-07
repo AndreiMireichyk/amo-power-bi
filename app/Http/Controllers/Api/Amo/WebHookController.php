@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Amo;
 
 use App\Http\Controllers\Controller;
+use App\Models\NewAmo\AmoNewContact;
 use App\Models\NewAmo\AmoNewLead;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -21,34 +22,34 @@ class WebHookController extends Controller
 
         foreach ($leads['update'] ?? [] as $lead){
             Storage::disk('local')->put('amocrm_webhook_lead_update.txt', var_export($request->all(), true));
-            //AmoNewLead::syncById($lead['id']);
+            AmoNewLead::syncById($lead['id']);
         }
 
         foreach ($leads['add'] ?? [] as $lead){
             Storage::disk('local')->put('amocrm_webhook_lead_add.txt', var_export($request->all(), true));
-            //AmoNewLead::syncById($lead['id']);
+            AmoNewLead::syncById($lead['id']);
         }
 
         foreach ($leads['delete'] ?? [] as $lead){
             Storage::disk('local')->put('amocrm_webhook_lead_delete.txt', var_export($request->all(), true));
-           // AmoNewLead::where('id', $lead['id'])->delete();
+           AmoNewLead::where('id', $lead['id'])->delete();
         }
 
 
 
-        foreach ($contacts['update'] ?? [] as $lead){
+        foreach ($contacts['update'] ?? [] as $contact){
             Storage::disk('local')->put('amocrm_webhook_contact_update.txt', var_export($request->all(), true));
-            //AmoNewLead::syncById($lead['id']);
+           AmoNewContact::syncById($contact['id']);
         }
 
-        foreach ($contacts['add'] ?? [] as $lead){
+        foreach ($contacts['add'] ?? [] as $contact){
             Storage::disk('local')->put('amocrm_webhook_contact_add.txt', var_export($request->all(), true));
-            //AmoNewLead::syncById($lead['id']);
+            AmoNewContact::syncById($contact['id']);
         }
 
-        foreach ($contacts['delete'] ?? [] as $lead){
+        foreach ($contacts['delete'] ?? [] as $contact){
             Storage::disk('local')->put('amocrm_webhook_contact_delete.txt', var_export($request->all(), true));
-           // AmoNewLead::where('id', $lead['id'])->delete();
+           AmoNewContact::where('id', $contact['id'])->delete();
         }
 
 
