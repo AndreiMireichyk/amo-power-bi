@@ -30,6 +30,15 @@ class AmoNewContact extends Model
         return static::manyUpdateOrCreateFromRaw($remoteRaw);
     }
 
+    public static function syncById($id)
+    {
+        $client = AmoCrm::whereSlug('new_sanatoriums')->firstOrFail()->client;
+
+        $raw = collect()->push($client->contacts()->getOne($id)->toArray());
+
+        return static::manyUpdateOrCreateFromRaw($raw);
+    }
+
     /**
      * Создает или обновляет контакты из запрошенных данных AmoCrm
      *
