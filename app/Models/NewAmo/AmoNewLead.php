@@ -48,17 +48,12 @@ class AmoNewLead extends Model
     public static function syncById($id)
     {
         $client = AmoCrm::whereSlug('new_sanatoriums')->first()->client;
+
         $raw = collect()->push($client->leads()->getOne($id, ['contacts'])->toArray());
 
         $prepared_raw = collect(static::prepareRaw($raw))->first();
 
         return static::updateOrCreate(['id' => $prepared_raw['id']], $prepared_raw);
-
-        try {
-
-        } catch (\Exception $e) {
-            echo $e->getMessage() . PHP_EOL;
-        }
     }
 
     /**
@@ -206,7 +201,7 @@ class AmoNewLead extends Model
 
                     if ($field['field_id'] == 0) continue;
 
-                    $lead[(string) $field['field_id']] = implode(';', array_column($field['values'], 'value'));
+                    $lead['amo_new_leads.' . $field['field_id']] = implode(';', array_column($field['values'], 'value'));
                 }
             }
 

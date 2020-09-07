@@ -32,15 +32,12 @@ class AmoNewContact extends Model
 
     public static function syncById($id)
     {
+
         $client = AmoCrm::whereSlug('new_sanatoriums')->firstOrFail()->client;
+
         $raw = collect()->push($client->contacts()->getOne($id)->toArray());
 
         return static::manyUpdateOrCreateFromRaw($raw);
-        try {
-
-        } catch (\Exception $e) {
-            echo $e->getMessage() . PHP_EOL;
-        }
 
     }
 
