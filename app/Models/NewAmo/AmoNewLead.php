@@ -48,7 +48,7 @@ class AmoNewLead extends Model
     public static function syncById($id){
         $client = AmoCrm::whereSlug('new_sanatoriums')->first()->client;
 
-        $raw = collect()->push($client->leads()->getOne($id, ['contacts']));
+        $raw = collect()->push($client->leads()->getOne($id, ['contacts'])->toArray());
 
         $prepared_raw = collect(static::prepareRaw($raw))->first();
 

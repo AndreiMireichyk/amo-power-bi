@@ -13,21 +13,53 @@ class WebHookController extends Controller
     {
         Storage::disk('local')->put('amocrm_webhook.txt', var_export($request->all(), true));
 
-        $leads = $request->get('leads');
+        $leads = $request->get('leads') ?? [];
 
-        $contacts = $request->get('contacts');
+        $contacts = $request->get('contacts') ?? [];
 
+        $unsorted = $request->get('unsorted') ?? [];
 
-      /*  foreach ($leads['update'] ?? [] as $lead){
-            AmoNewLead::syncById($lead['id']);
+        foreach ($leads['update'] ?? [] as $lead){
+            Storage::disk('local')->put('amocrm_webhook_lead_update.txt', var_export($request->all(), true));
+            //AmoNewLead::syncById($lead['id']);
         }
 
         foreach ($leads['add'] ?? [] as $lead){
-            AmoNewLead::syncById($lead['id']);
+            Storage::disk('local')->put('amocrm_webhook_lead_add.txt', var_export($request->all(), true));
+            //AmoNewLead::syncById($lead['id']);
         }
 
         foreach ($leads['delete'] ?? [] as $lead){
-            AmoNewLead::where('id', $lead['id'])->delete();
-        }*/
+            Storage::disk('local')->put('amocrm_webhook_lead_delete.txt', var_export($request->all(), true));
+           // AmoNewLead::where('id', $lead['id'])->delete();
+        }
+
+
+
+        foreach ($contacts['update'] ?? [] as $lead){
+            Storage::disk('local')->put('amocrm_webhook_contact_update.txt', var_export($request->all(), true));
+            //AmoNewLead::syncById($lead['id']);
+        }
+
+        foreach ($contacts['add'] ?? [] as $lead){
+            Storage::disk('local')->put('amocrm_webhook_contact_add.txt', var_export($request->all(), true));
+            //AmoNewLead::syncById($lead['id']);
+        }
+
+        foreach ($contacts['delete'] ?? [] as $lead){
+            Storage::disk('local')->put('amocrm_webhook_contact_delete.txt', var_export($request->all(), true));
+           // AmoNewLead::where('id', $lead['id'])->delete();
+        }
+
+
+        foreach ($unsorted['add'] ?? [] as $lead){
+            Storage::disk('local')->put('amocrm_webhook_unsorted_add.txt', var_export($request->all(), true));
+            //AmoNewLead::syncById($lead['id']);
+        }
+
+        foreach ($unsorted['delete'] ?? [] as $lead){
+            Storage::disk('local')->put('amocrm_webhook_unsorted_delete.txt', var_export($request->all(), true));
+            //AmoNewLead::syncById($lead['id']);
+        }
     }
 }
