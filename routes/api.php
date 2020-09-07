@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::any('/amocrm_webhook', function (Request $request) {
+    \Illuminate\Support\Facades\Storage::disk('local')->put('amocrm.txt', var_export($request->all(), true));
+});
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
