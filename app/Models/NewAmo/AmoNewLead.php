@@ -206,7 +206,7 @@ class AmoNewLead extends Model
 
                     if ($field['field_id'] == 0) continue;
 
-                    $lead[$field['field_id']] = implode(';', array_column($field['values'], 'value'));
+                    $lead[(string) $field['field_id']] = implode(';', array_column($field['values'], 'value'));
                 }
             }
 
