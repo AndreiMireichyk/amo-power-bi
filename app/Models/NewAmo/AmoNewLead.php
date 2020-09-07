@@ -154,7 +154,7 @@ class AmoNewLead extends Model
 
             //custom fields
             foreach ($prepared_fields as $key => $name) {
-                $table->text("$key")->nullable()->comment($name);
+                $table->text("cf_$key")->nullable()->comment($name);
             }
 
             $table->text('created_at')->nullable();
@@ -162,6 +162,8 @@ class AmoNewLead extends Model
             $table->text('closed_at')->nullable();
         });
     }
+
+
 
     /**
      * Приводим к нужному формату
@@ -201,10 +203,9 @@ class AmoNewLead extends Model
 
                     if ($field['field_id'] == 0) continue;
 
-                    $lead['amo_new_leads.' . $field['field_id']] = implode(';', array_column($field['values'], 'value'));
+                    $lead["cf_".$field['field_id']] = implode(';', array_column($field['values'], 'value'));
                 }
             }
-
 
             array_push($prepared, $lead);
 
