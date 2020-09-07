@@ -18,7 +18,7 @@ class WebHookController extends Controller
         $contacts = $request->get('contacts');
 
 
-        foreach ($leads['update'] ?? [] as $lead){
+      /*  foreach ($leads['update'] ?? [] as $lead){
             AmoNewLead::syncById($lead['id']);
         }
 
@@ -28,6 +28,6 @@ class WebHookController extends Controller
 
         foreach ($leads['delete'] ?? [] as $lead){
             AmoNewLead::where('id', $lead['id'])->delete();
-        }
+        }*/
     }
 }

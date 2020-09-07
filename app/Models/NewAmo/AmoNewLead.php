@@ -48,7 +48,7 @@ class AmoNewLead extends Model
     public static function syncById($id){
         $client = AmoCrm::whereSlug('new_sanatoriums')->first()->client;
 
-        $raw = collect()->push($client->leads()->getOne($id, ['contacts'])->toArray());
+        $raw = collect()->push($client->leads()->getOne($id, ['contacts']));
 
         $prepared_raw = collect(static::prepareRaw($raw))->first();
 
@@ -82,7 +82,6 @@ class AmoNewLead extends Model
                 $currentPage = $leads->get($filter, ['contacts']);
                 $fullList->push($currentPage->toArray());
                 $page = $page + 1;
-                $page = false;
             } catch (\Exception $e) {
                 $page = false;
                 echo $e->getMessage() . "\n";
@@ -197,8 +196,7 @@ class AmoNewLead extends Model
             ];
 
             if (isset($item['custom_fields_values']) && !is_null($item['custom_fields_values'])) {
-
-                foreach ($item['custom_fields_values']->toArray() as $field) {
+                foreach ($item['custom_fields_values'] as $field) {
 
                     if ($field['field_id'] == 0) continue;
 
