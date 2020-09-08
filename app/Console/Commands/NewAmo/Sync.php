@@ -42,7 +42,7 @@ class Sync extends Command
         Artisan::call('amocrm:new-users-sync');
         Artisan::call('amocrm:new-pipelines-sync');
         Artisan::call('amocrm:new-statuses-sync');
-        Artisan::call('amocrm:new-contacts-sync');
-        Artisan::call('amocrm:new-leads-sync');
+        //Artisan::call('amocrm:new-contacts-sync');
+        //Artisan::call('amocrm:new-leads-sync');
     }
 }

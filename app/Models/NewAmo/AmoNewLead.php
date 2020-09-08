@@ -47,11 +47,14 @@ class AmoNewLead extends Model
 
     public static function syncById($id)
     {
+
         $client = AmoCrm::whereSlug('new_sanatoriums')->first()->client;
 
         $raw = collect()->push($client->leads()->getOne($id, ['contacts'])->toArray());
 
         $prepared_raw = collect(static::prepareRaw($raw))->first();
+
+        static::tableColumnCompare($prepared_raw);
 
         return static::updateOrCreate(['id' => $prepared_raw['id']], $prepared_raw);
     }
@@ -64,7 +67,7 @@ class AmoNewLead extends Model
     public static function getRemoteList()
     {
         $fullList = collect();
-        $page = 1;
+        $page = 456;
         $limit = 50;
 
         $client = AmoCrm::whereSlug('new_sanatoriums')->first()->client;
@@ -163,7 +166,26 @@ class AmoNewLead extends Model
         });
     }
 
+    /**
+     * Добавляем не достающие колонки
+     * @param $raw
+     */
+    public static function tableColumnCompare($raw)
+    {
+        $table_name = (new self())->getTable();
 
+        $table_columns = Schema::getColumnListing($table_name);
+
+        $raw_columns = array_keys($raw);
+
+        $diff_columns = array_diff($raw_columns, $table_columns);
+
+        Schema::table('amo_new_leads', function (Blueprint $table) use ($diff_columns) {
+            foreach ($diff_columns as $name) {
+                $table->text("$name")->nullable()->comment($name);
+            }
+        });
+    }
 
     /**
      * Приводим к нужному формату
@@ -203,7 +225,7 @@ class AmoNewLead extends Model
 
                     if ($field['field_id'] == 0) continue;
 
-                    $lead["cf_".$field['field_id']] = implode(';', array_column($field['values'], 'value'));
+                    $lead["cf_" . $field['field_id']] = implode(';', array_column($field['values'], 'value'));
                 }
             }
 
